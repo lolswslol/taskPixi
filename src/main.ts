@@ -133,7 +133,7 @@ class Slot extends Sprite{
         else {
             if (this.y < 0) {
                 let min = coordinates[0];
-                for (let i = 0; i <= 6; i++) {
+                for (let i = 0; i <= 4; i++) {
                     if ((coordinates[i] - this.y) >= min) {
                         min = coordinates[i] - this.y
                     }
