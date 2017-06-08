@@ -26,9 +26,12 @@ for (let i = 0; i <= slotCount; i++) {
     count+=slotHeight;
 }
 
+
+
 let stage= new PIXI.Container();
 document.getElementById('display').appendChild(renderer.view);
 document.getElementById('btn').addEventListener('click',()=>{trigger=!trigger;slots[0].forEach((s:Slot)=>{console.log(s.position)})});
+document.getElementById('btn2').addEventListener('click',()=>{addSlots(slots)});
 
 
 
@@ -82,6 +85,11 @@ function animationLoop() {
     renderer.render(stage);
 }
 
+function addSlots(arr:Slot[]){
+    delete slots[0];
+}
+
+
 
 function play(slots:any[]){
 
@@ -128,49 +136,47 @@ class Slot extends Sprite{
     }
 
 
+
+
     checkCoord(){
-        if(coordinates.some(val=>{return val==this.y})){}
+        if(coordinates.some(s=>{return s==this.y})){
+
+        }
         else {
-            if (this.y < 0) {
-                let min = coordinates[0];
-                for (let i = 0; i <= 4; i++) {
-                    if ((coordinates[i] - this.y) >= min) {
-                        min = coordinates[i] - this.y
+            for(let i=0;i<=10;i++){
+                if(this.y> coordinates[i] && this.y<coordinates[i+1]){
+                    if(Math.abs(coordinates[i]-this.y)<Math.abs(coordinates[i+1]-this.y)){
+                        this.y=coordinates[i];
+                    }else {
+                        this.y=coordinates[i+1];
+
                     }
+                }else{
+
                 }
-                this.y += min;
-            }
-            if (this.y == 0) {
 
             }
-            if (this.y > 0) {
-                let min = coordinates[6];
-                for (let i = 6; i <= 11; i++) {
-                    if ((coordinates[i] - this.y) <= min) {
-                        min = coordinates[i] - this.y
-                    }
-                }
-                this.y -= min;
+            if(this.y>coordinates[11]){
+                this.y=coordinates[11];
+            }
+            if(this.y<coordinates[0]){
+                this.y=coordinates[11]
             }
         }
+
+
+
+
+
+
     }
 
 
     stop(){
             this.checkCoord();
-        /*if(this.vy>0){
-            this.vy-=1;
-            this.y+=this.vy;
-        }
-
-        if(this.y>=coordinates[11]){
-            let overCome = this.y-coordinates[11];
-            this.y=coordinates[0]+overCome;
-        }*/
     }
 
 }
-
 
 
 
