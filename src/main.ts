@@ -20,6 +20,8 @@ const slotHeight = 139;
 let trigger:boolean=false;
 
 
+let bool:boolean=false;
+
 let count = -slotHeight*5;
 for (let i = 0; i <= slotCount; i++) {
     coordinates.push(count);
@@ -30,8 +32,8 @@ for (let i = 0; i <= slotCount; i++) {
 
 let stage= new PIXI.Container();
 document.getElementById('display').appendChild(renderer.view);
-document.getElementById('btn').addEventListener('click',()=>{trigger=!trigger;slots[0].forEach((s:Slot)=>{console.log(s.position)})});
-document.getElementById('btn2').addEventListener('click',()=>{addSlots(slots)});
+document.getElementById('btn').addEventListener('click',()=>{slots[0].forEach((s:Slot)=>{s.trigger=false})});
+document.getElementById('btn2').addEventListener('click',()=>{slots.forEach(s=>{s.forEach((a:Slot)=>{a.trigger=true;})})});
 
 
 
@@ -80,15 +82,20 @@ function setup(){
 function animationLoop() {
 
     requestAnimationFrame(animationLoop);
-
-    play(slots);
+    slots.forEach(s=>{
+        s.forEach((a:Slot)=>{
+            a.state();
+        })
+    });
+    /*play(slots);*/
     renderer.render(stage);
 }
 
-function addSlots(arr:Slot[]){
-    delete slots[0];
+function del(){
+    slots[0].forEach((s:Slot)=>{
+        s.state();
+    })
 }
-
 
 
 function play(slots:any[]){
@@ -115,9 +122,16 @@ class Slot extends Sprite{
     x:number;
     y:number;
     vy:number=0;
+    trigger:boolean=false;
 
     constructor(arg:any){
         super(arg);
+    }
+
+
+    state(){
+        if(this.trigger){this.play()}
+        else {this.stop()}
     }
 
     play(){
