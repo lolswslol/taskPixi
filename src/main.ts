@@ -13,14 +13,11 @@ let fourthColumn:Slot[]=[];
 let fifthColumn:Slot[]=[];
 let slots:any[] = [];
 let coordinates:number[]=[];
-let size=50;
 const slotCount = 11;
 const slotWidth=145;
 const slotHeight = 139;
 let trigger:boolean=false;
 
-
-let bool:boolean=false;
 
 let count = -slotHeight*5;
 for (let i = 0; i <= slotCount; i++) {
@@ -28,13 +25,44 @@ for (let i = 0; i <= slotCount; i++) {
     count+=slotHeight;
 }
 
+function getCoordinates(coordinates:number[]){
+    let count = -slotHeight*5;
+    const slotCount = 11;
+    for (let i = 0; i <= slotCount; i++) {
+        coordinates[i]=count;
+        count+=slotHeight;
+    }
+    return coordinates;
+}
+
 
 
 let stage= new PIXI.Container();
 document.getElementById('display').appendChild(renderer.view);
-document.getElementById('btn').addEventListener('click',()=>{slots[0].forEach((s:Slot)=>{s.trigger=false})});
+document.getElementById('btn').addEventListener('click',()=>{testStop();console.log(getCoordinates(coordinates))});
 document.getElementById('btn2').addEventListener('click',()=>{slots.forEach(s=>{s.forEach((a:Slot)=>{a.trigger=true;})})});
 
+
+function testStop(){
+    setTimeout(()=>{slots[0].forEach((s:Slot)=>{s.trigger=false});},1000);
+    setTimeout(()=>{slots[1].forEach((s:Slot)=>{s.trigger=false});},2000);
+    setTimeout(()=>{slots[2].forEach((s:Slot)=>{s.trigger=false});},3000);
+    setTimeout(()=>{slots[3].forEach((s:Slot)=>{s.trigger=false});},4000);
+    setTimeout(()=>{slots[4].forEach((s:Slot)=>{s.trigger=false});},5000);
+}
+
+
+function testRandom(min:number,max:number):number{
+     return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+
+function getRndCoordinate(arr:number[]){
+    let index= testRandom(0,arr.length-2);
+    let value= arr[index];
+    arr.splice(index,1);
+    return value;
+}
 
 
 PIXI.loader.add("1","images/01.png")
@@ -68,11 +96,19 @@ function setup(){
              s.push(createSprites(i));
              s[i-1].width=slotWidth;
              s[i-1].height=slotHeight;
-             s[i-1].position.set(slotIndex,coordinates[i]);
+             s[i-1].position.set(slotIndex,getRndCoordinate(coordinates)/*coordinates[i]*/);
              stage.addChild(s[i-1]);
          }
+         getCoordinates(coordinates);
          slotIndex+=215;
      });
+
+
+
+        /*slots[0].sort(testRandom);*/
+
+
+
 
         animationLoop();
 
