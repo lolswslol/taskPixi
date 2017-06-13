@@ -1,9 +1,35 @@
 import 'pixi.js';
+import 'create.js';
 import Sprite = PIXI.Sprite;
 
 let renderer = PIXI.autoDetectRenderer(1040,556,{
+    transparent:true,
     resolution:1
 });
+
+let sound=createjs.Sound;
+
+let customEvent = new CustomEvent('tick');
+let playEvent = new CustomEvent('play');
+let stopEvent = new CustomEvent('stop');
+let playLanding = new CustomEvent('landing');
+
+let soundID='Thunder';
+let soundLanding1='Landing1';
+
+window.onload=loadSound;
+
+
+function loadSound() {
+    createjs.Sound.registerSound("images/Reel_Spin.mp3", soundID);
+    createjs.Sound.registerSound("images/Landing_1.mp3", soundLanding1);
+}
+
+sound.on("complete",()=>{this.sound.play(soundID)});
+sound.on('tick',()=>{sound.stop()});
+sound.on('play',()=>{sound.play(soundID)});
+sound.on('landing',()=>{sound.play(soundLanding1)});
+
 
 
 let firstColumn:Slot[]=[];
@@ -39,17 +65,39 @@ function getCoordinates(coordinates:number[]){
 
 let stage= new PIXI.Container();
 document.getElementById('display').appendChild(renderer.view);
-document.getElementById('btn').addEventListener('click',()=>{testStop();console.log(getCoordinates(coordinates))});
-document.getElementById('btn2').addEventListener('click',()=>{slots.forEach(s=>{s.forEach((a:Slot)=>{a.trigger=true;})})});
+document.getElementById('btn2').addEventListener('click',testStart);
 
+
+
+function changeAppearance(){
+    let immage:HTMLImageElement=<HTMLImageElement>document.getElementById('btn2');
+    immage.src="images/btn_spin_normal.png";
+    document.getElementById("btn2").addEventListener('click',testStart);
+}
+
+
+function testStart(){
+    console.log('start');
+    sound.dispatchEvent(playEvent);
+    let image:HTMLImageElement=<HTMLImageElement>document.getElementById("btn2");
+    image.src="images/btn_spin_disable.png";
+    document.getElementById("btn2").removeEventListener('click',testStart);
+    slots.forEach(s=>{s.forEach((a:Slot)=>{a.trigger=true;})});
+    setTimeout(()=>{testStop()},4000);
+
+}
 
 function testStop(){
-    setTimeout(()=>{slots[0].forEach((s:Slot)=>{s.trigger=false});},1000);
-    setTimeout(()=>{slots[1].forEach((s:Slot)=>{s.trigger=false});},2000);
-    setTimeout(()=>{slots[2].forEach((s:Slot)=>{s.trigger=false});},3000);
-    setTimeout(()=>{slots[3].forEach((s:Slot)=>{s.trigger=false});},4000);
-    setTimeout(()=>{slots[4].forEach((s:Slot)=>{s.trigger=false});},5000);
+    setTimeout(()=>{slots[0].forEach((s:Slot)=>{s.trigger=false});sound.dispatchEvent(playLanding)},500);
+    setTimeout(()=>{slots[1].forEach((s:Slot)=>{s.trigger=false});sound.dispatchEvent(playLanding)},1000);
+    setTimeout(()=>{slots[2].forEach((s:Slot)=>{s.trigger=false});sound.dispatchEvent(playLanding)},1500);
+    setTimeout(()=>{slots[3].forEach((s:Slot)=>{s.trigger=false});sound.dispatchEvent(playLanding)},2000);
+    setTimeout(()=>{slots[4].forEach((s:Slot)=>{s.trigger=false});sound.dispatchEvent(playLanding)},2500);
+    setTimeout(()=>{changeAppearance()},2501);
+
 }
+
+
 
 
 function testRandom(min:number,max:number):number{

@@ -19,6 +19,12 @@ gulp.task('images', function() {
         .pipe(gulp.dest('dist/images/')); // результат пишем по указанному адресу
 
 });
+gulp.task('sounds', function() {
+    gulp.src('src/assets/**/*') // берем любые файлы в папке и ее подпапках
+        .pipe(gulp.dest('dist/sounds/')); // результат пишем по указанному адресу
+
+});
+
 
 gulp.task("default", ["copy-html"], function () {
     return browserify({

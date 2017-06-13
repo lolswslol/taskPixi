@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/createjs": "0.0.29",
     "browserify": "^14.4.0",
+    "create.js": "0.0.16",
+    "createjs": "0.0.1",
     "gulp": "^3.9.1",
     "gulp-imagemin": "^3.3.0",
     "gulp-sourcemaps": "^2.6.0",
@@ -23,6 +26,7 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "@types/node": "^7.0.31",
     "@types/pixi.js": "^4.4.4"
   }
 }
