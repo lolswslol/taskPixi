@@ -14,19 +14,19 @@ gulp.task("copy-html", function () {
 });
 
 gulp.task('images', function() {
-    gulp.src('src/assets/**/*') // берем любые файлы в папке и ее подпапках
-        .pipe(imagemin()) // оптимизируем изображения для веба
-        .pipe(gulp.dest('dist/images/')); // результат пишем по указанному адресу
+    gulp.src('src/assets/**/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/images/'));
 
 });
 gulp.task('sounds', function() {
-    gulp.src('src/assets/**/*') // берем любые файлы в папке и ее подпапках
-        .pipe(gulp.dest('dist/sounds/')); // результат пишем по указанному адресу
+    gulp.src('src/assets/*.mp3')
+        .pipe(gulp.dest('dist/images/')); // результат пишем по указанному адресу
 
 });
 
 
-gulp.task("default", ["copy-html"], function () {
+gulp.task("default", ["copy-html","sounds","images"], function () {
     return browserify({
         basedir: '.',
         debug: true,
